@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h5 class="mb-0">{{ e.name }}</h5>
+    <div class="text-muted small">{{ e.code }} · {{ e.category }} · Estado: {{ e.status }}</div>
+  </div>
+  <a class="btn btn-outline-secondary btn-sm" href="/">Volver</a>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-6">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fw-semibold mb-2">Últimos registros (DailyLog)</div>
+        {% if logs %}
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Turno</th>
+                  <th>Operador</th>
+                  <th>HM Ini</th>
+                  <th>HM Fin</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for l in logs %}
+                <tr>
+                  <td>{{ l.date }}</td>
+                  <td>{{ l.shift }}</td>
+                  <td>{{ l.operator_name|default:"—" }}</td>
+                  <td>{{ l.hourmeter_start|default:"—" }}</td>
+                  <td>{{ l.hourmeter_end|default:"—" }}</td>
+                  <td><span class="badge text-bg-secondary">{{ l.status }}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="text-muted small">Sin registros aún.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body">
+        <div class="fw-semibold mb-2">Avisos (Issues)</div>
+        {% if issues %}
+          <ul class="list-group list-group-flush">
+            {% for i in issues %}
+              <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                  <div class="fw-semibold">{{ i.title }}</div>
+                  <span class="badge text-bg-secondary">{{ i.status }}</span>
+                </div>
+                <div class="small text-muted">{{ i.reported_at }}</div>
+                {% if i.description %}<div class="small">{{ i.description }}</div>{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="text-muted small">Sin avisos.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fw-semibold mb-2">Órdenes de trabajo (OT)</div>
+        {% if wos %}
+          <ul class="list-group list-group-flush">
+            {% for w in wos %}
+              <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                  <div class="fw-semibold">OT #{{ w.id }} · {{ w.type }}</div>
+                  <span class="badge text-bg-secondary">{{ w.status }}</span>
+                </div>
+                <div class="small text-muted">Abierta: {{ w.opened_at }}</div>
+                {% if w.symptom %}<div class="small">{{ w.symptom }}</div>{% endif %}
+                <div class="small text-muted">
+                  Downtime: {{ w.downtime_hours|default:"—" }} h · Repair: {{ w.repair_hours|default:"—" }} h
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="text-muted small">Sin OT.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

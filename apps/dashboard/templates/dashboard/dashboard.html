@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h5 class="mb-3">Equipos</h5>
+
+<div class="row g-3">
+  {% for c in cards %}
+  <div class="col-12 col-md-6 col-lg-4">
+    <a class="text-decoration-none" href="/eq/{{ c.id }}/">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="fw-semibold">{{ c.name }}</div>
+              <div class="text-muted small">{{ c.code }} · {{ c.category }}</div>
+            </div>
+            <span class="badge text-bg-{{ c.badge }}">{{ c.status }}</span>
+          </div>
+
+          <hr class="my-2">
+
+          <div class="small">
+            <div>Última fecha: <span class="fw-semibold">{{ c.last_date|default:"—" }}</span></div>
+            <div>Horómetro final: <span class="fw-semibold">{{ c.hourmeter_end|default:"—" }}</span></div>
+            <div>OT abiertas: <span class="fw-semibold">{{ c.open_wos }}</span></div>
+            <div>Avisos abiertos: <span class="fw-semibold">{{ c.open_issues }}</span></div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
