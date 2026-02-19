@@ -140,7 +140,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"    # salida de collectstatic (prod)
 
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     }
 }
 
@@ -153,4 +153,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
 
